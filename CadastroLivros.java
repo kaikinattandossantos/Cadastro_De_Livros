@@ -15,6 +15,7 @@ public class CadastroLivros {
             System.out.println("2 - Listar livros");
             System.out.println("3 - Marcar como lido");
             System.out.println("4 - Sair do sistema");
+            System.out.println("5 - verificar genêros");
             System.out.print("Opção: ");
 
             opcao = scanner.nextInt();
@@ -22,15 +23,33 @@ public class CadastroLivros {
 
             switch (opcao) {
                 case 1:
-                    System.out.print("Digite o nome do livro: ");
-                    String titulo = scanner.nextLine();
-                    System.out.print("Digite o autor do livro: ");
-                    String autor = scanner.nextLine();
-
-                    Livro novoLivro = new Livro(titulo, autor);
-                    estante.add(novoLivro);
-                    System.out.println("Livro adicionado com sucesso!");
-                    break;
+                System.out.print("Digite o nome do livro: ");
+                String titulo = scanner.nextLine();
+                System.out.print("Digite o autor do livro: ");
+                String autor = scanner.nextLine();
+                
+                System.out.println("Digite um número para o gênero do livro");
+                System.out.println("'1' - Aventura");
+                System.out.println("'2' - Romance");
+                int escolhaGenero = scanner.nextInt();
+                scanner.nextLine(); 
+                
+                String genero = "";
+                switch (escolhaGenero) {
+                    case 1:
+                        genero = "Aventura";
+                        break;
+                    case 2:
+                        genero = "Romance";
+                        break;
+                    default:
+                        genero = "Desconhecido";
+                }
+                
+                Livro novoLivro = new Livro(titulo, autor, genero);
+                estante.add(novoLivro);
+                System.out.println("Livro de " + genero + " cadastrado com sucesso!");
+                break;
 
                 case 2:
                     if (estante.isEmpty()) {
@@ -41,7 +60,7 @@ public class CadastroLivros {
                             Livro livro = estante.get(i);
                             System.out.println((i + 1) + ". " + livro.getTitulo() + 
                                              " - " + livro.getAutor() + 
-                                             " (" + (livro.isLido() ? "Lido" : "Não lido") + ")");
+                                             " (" + (livro.isLido() ? "Lido" : "Não lido") + ")" + livro.getGenero());
                         }
                     }
                     break;
@@ -71,10 +90,30 @@ public class CadastroLivros {
                     System.out.println("Saindo do sistema...");
                     break;
 
+
+                    case 5:
+                    System.out.println("\n--- FILTRAR POR GÊNERO ---");
+                    System.out.println("1 - Aventura");
+                    System.out.println("2 - Romance");
+                    System.out.print("Escolha um gênero: ");
+                    int filtroGenero = scanner.nextInt();
+                    scanner.nextLine(); 
+                    
+                    String generoFiltro = filtroGenero == 1 ? "Aventura" : "Romance";
+                    
+                    System.out.println("\nLivros de " + generoFiltro + ":");
+                    for (Livro livro : estante) {
+                        if (livro.getGenero().equalsIgnoreCase(generoFiltro)) {
+                            System.out.println("- " + livro.getTitulo() + " (" + livro.getAutor() + ")");
+                        }
+                    }
+                    break;
+
                 default:
                     System.out.println("Opção inválida!");
             }
-        } while (opcao != 4);
+        } while (opcao != 5);
+
 
         scanner.close();
     }
